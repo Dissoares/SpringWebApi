@@ -16,7 +16,7 @@ public class RelatorioRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<Map<String, Object>> consultarDadosParaRelatorio() {
+    public List<Map<String, Object>> dadosRelatorio(int offset, int limit) {
         String consultaSQL = "SELECT col.ID," +
                 "col.NOME," +
                 "col.CPF," +
@@ -32,8 +32,9 @@ public class RelatorioRepository {
                 "INNER JOIN empresa ON col.EMPRESA_FK = empresa.ID " +
                 "INNER JOIN endereco en ON empresa.ENDERECO_FK = en.ID " +
                 "WHERE col.ATIVO = 1 " +
-                "ORDER BY col.ID DESC";
+                "ORDER BY col.ID DESC " +
+                "LIMIT ? OFFSET ?";
 
-        return jdbcTemplate.queryForList(consultaSQL);
+        return jdbcTemplate.queryForList(consultaSQL, limit, offset);
     }
 }
